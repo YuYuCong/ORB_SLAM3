@@ -1,4 +1,8 @@
 #!/bin/bash
+
+
+
+
 # pathDatasetTUM_VI='/Datasets/TUM_VI' #Example, it is necesary to change it by the dataset path
 
 
@@ -23,7 +27,7 @@ echo "Launching ""$Dataset"" with Monocular-Inertial sensor"
 ./Monocular-Inertial/TUM_512_far.yaml \
 "$pathDatasetTUM_VI"/"$Dataset"/mav0/cam0/data \
 ./Monocular-Inertial/TUM_TimeStamps/"$Dataset".txt \
- "$pathDatasetTUM_VI"/"$Dataset"/mav0/imu0/data.csv \
+"$pathDatasetTUM_VI"/"$Dataset"/mav0/imu0/data.csv \
 "$Dataset"_mono_inertial
 
 mkdir ORB_SLAM3-results
