@@ -20,24 +20,32 @@
 
 pathDatasetTUM_VI='/Datasets/TUM_VI'
 
-Dataset='dataset-room5_512_16'
-echo "------------------------------------"
-echo "Launching ""$Dataset"" with Monocular-Inertial sensor"
-./Monocular-Inertial/mono_inertial_tum_vi ../Vocabulary/ORBvoc.txt \
-./Monocular-Inertial/TUM_512_far.yaml \
-"$pathDatasetTUM_VI"/"$Dataset"/mav0/cam0/data \
-./Monocular-Inertial/TUM_TimeStamps/"$Dataset".txt \
-"$pathDatasetTUM_VI"/"$Dataset"/mav0/imu0/data.csv \
-"$Dataset"_mono_inertial
+DatasetList=(\
+"dataset-corridor4_512_16" \
+"dataset-corridor5_512_16" \
+"dataset-room5_512_16" \
+)
 
-mkdir ORB_SLAM3-results
-mv ./*"$Dataset"_mono_inertial.txt ./ORB_SLAM3-results/
-echo "------------------------------------"
-echo "Evaluation of ""$Dataset"" trajectory with Monocular-Inertial sensor"
-python ../evaluation/evaluate_ate_scale.py \
-"$pathDatasetTUM_VI"/"$Dataset"/mav0/mocap0/data.csv \
-./ORB_SLAM3-results/f_"$Dataset"_mono_inertial.txt \
---plot ./ORB_SLAM3-results/"$Dataset"_mono_inertial.pdf \
---verbose2
-echo "result can be found in ./ORB_SLAM3-results/"
-echo "------------------------------------"
+for Dataset in ${DatasetList[@]}
+do
+  echo "------------------------------------"
+  echo "Launching ""$Dataset"" with Monocular-Inertial sensor"
+  ./Monocular-Inertial/mono_inertial_tum_vi ../Vocabulary/ORBvoc.txt \
+  ./Monocular-Inertial/TUM_512_far.yaml \
+  "$pathDatasetTUM_VI"/"$Dataset"/mav0/cam0/data \
+  ./Monocular-Inertial/TUM_TimeStamps/"$Dataset".txt \
+  "$pathDatasetTUM_VI"/"$Dataset"/mav0/imu0/data.csv \
+  "$Dataset"_mono_inertial
+
+  mkdir ORB_SLAM3-results
+  mv ./*"$Dataset"_mono_inertial.txt ./ORB_SLAM3-results/
+  echo "------------------------------------"
+  echo "Evaluation of ""$Dataset"" trajectory with Monocular-Inertial sensor"
+  python ../evaluation/evaluate_ate_scale.py \
+  "$pathDatasetTUM_VI"/"$Dataset"/mav0/mocap0/data.csv \
+  ./ORB_SLAM3-results/f_"$Dataset"_mono_inertial.txt \
+  --plot ./ORB_SLAM3-results/"$Dataset"_mono_inertial.pdf \
+  --verbose2
+  echo "result can be found in ./ORB_SLAM3-results/"
+  echo "------------------------------------"
+done

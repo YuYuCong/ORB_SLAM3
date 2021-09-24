@@ -42,23 +42,34 @@
 
 pathDatasetEuroc='/Datasets/EuRoc'
 
-Dataset='V2_01_easy'
-echo "------------------------------------"
-echo "Launching ""$pathDatasetEuroc"/"$Dataset"" with Monocular-Inertial sensor"
-./Monocular-Inertial/mono_inertial_euroc ../Vocabulary/ORBvoc.txt \
-./Monocular-Inertial/EuRoC.yaml \
-"$pathDatasetEuroc"/"$Dataset" \
-./Monocular-Inertial/EuRoC_TimeStamps/"$Dataset".txt \
-"$Dataset"_mono_inertial
+DatasetList=(\
+"MH_03_medium" \
+"MH_04_difficult" \
+"MH_05_difficult" \
+"V2_01_easy" \
+"V2_02_medium" \
+"V2_03_difficult"
+)
 
-mkdir ORB_SLAM3-results
-mv ./*"$Dataset"_mono_inertial.txt ./ORB_SLAM3-results/
-echo "------------------------------------"
-echo "Evaluation of ""$Dataset"" trajectory with Monocular-Inertial sensor"
-python ../evaluation/evaluate_ate_scale.py \
-"$pathDatasetEuroc"/"$Dataset"/mav0/state_groundtruth_estimate0/data.csv \
-./ORB_SLAM3-results/f_"$Dataset"_mono_inertial.txt \
---plot ./ORB_SLAM3-results/"$Dataset"_mono_inertial.pdf \
---verbose2
-echo "result can be found in ./ORB_SLAM3-results/"
-echo "------------------------------------"
+for Dataset in ${DatasetList[@]}
+do
+  echo "------------------------------------"
+  echo "Launching ""$pathDatasetEuroc"/"$Dataset"" with Monocular-Inertial sensor"
+  ./Monocular-Inertial/mono_inertial_euroc ../Vocabulary/ORBvoc.txt \
+  ./Monocular-Inertial/EuRoC.yaml \
+  "$pathDatasetEuroc"/"$Dataset" \
+  ./Monocular-Inertial/EuRoC_TimeStamps/"$Dataset".txt \
+  "$Dataset"_mono_inertial
+
+  mkdir ORB_SLAM3-results
+  mv ./*"$Dataset"_mono_inertial.txt ./ORB_SLAM3-results/
+  echo "------------------------------------"
+  echo "Evaluation of ""$Dataset"" trajectory with Monocular-Inertial sensor"
+  python ../evaluation/evaluate_ate_scale.py \
+  "$pathDatasetEuroc"/"$Dataset"/mav0/state_groundtruth_estimate0/data.csv \
+  ./ORB_SLAM3-results/f_"$Dataset"_mono_inertial.txt \
+  --plot ./ORB_SLAM3-results/"$Dataset"_mono_inertial.pdf \
+  --verbose2
+  echo "result can be found in ./ORB_SLAM3-results/"
+  echo "------------------------------------"
+done

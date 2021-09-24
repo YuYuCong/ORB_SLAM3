@@ -117,13 +117,50 @@ include/Config.h
 
 add_subdirectory(Thirdparty/g2o)
 
+
+find_package(Boost REQUIRED COMPONENTS filesystem)
+if(Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})    
+    MESSAGE( STATUS "Boost_INCLUDE_DIRS = ${Boost_INCLUDE_DIRS}.")
+    MESSAGE( STATUS "Boost_LIBRARIES = ${Boost_LIBRARIES}.")
+    MESSAGE( STATUS "Boost_LIB_VERSION = ${Boost_LIB_VERSION}.")
+    MESSAGE( STATUS "Boost_LIB_DIR = ${Boost_LIB_DIR}.")
+else()
+    MESSAGE( FATAL_ERROR "Boost not found")
+endif()
+
+# ADD_THIRD_PARTY defines a named third party library, with included
+# headers and linked libraries.
+function(ADD_THIRD_PARTY lib_name includes # link_libs
+        )
+    # Skip if library exists, generally because of building sources
+    if (TARGET ${lib_name})
+        return()
+    endif ()
+    # Add interface
+    add_library(${lib_name} INTERFACE)
+    # Target includes
+    target_include_directories(${lib_name} INTERFACE ${includes})
+    # Link libraries
+    target_link_libraries(${lib_name} INTERFACE ${ARGN})
+endfunction()
+
+set(Boost_INCLUDE_DIRS "${Boost_INCLUDE_DIRS}")
+set(THIRDPARTY_LIBRARY "/usr/local/lib")
+
+# Boost (filesystem, system and serialization libraries only)
+add_third_party(boost ${Boost_INCLUDE_DIRS}
+        ${THIRDPARTY_LIBRARY}/libboost_filesystem.so.1.75.0
+        ${THIRDPARTY_LIBRARY}/libboost_system.so.1.75.0
+        ${THIRDPARTY_LIBRARY}/libboost_serialization.so.1.75.0) # todo(congyu) only works on my cumputer
+
 target_link_libraries(${PROJECT_NAME}
 ${OpenCV_LIBS}
 ${EIGEN3_LIBS}
 ${Pangolin_LIBRARIES}
 ${PROJECT_SOURCE_DIR}/Thirdparty/DBoW2/lib/libDBoW2.so
 ${PROJECT_SOURCE_DIR}/Thirdparty/g2o/lib/libg2o.so
--lboost_serialization
+boost
 -lcrypto
 )
 

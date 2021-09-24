@@ -22,7 +22,7 @@
 #include<chrono>
 #include <ctime>
 #include <sstream>
-
+#include <boost/filesystem.hpp>
 #include<opencv2/core/core.hpp>
 
 #include<System.h>
@@ -30,10 +30,10 @@
 
 using namespace std;
 
-void LoadImages(const string &strImagePath, const string &strPathTimes,
+const bool LoadImages(const string &strImagePath, const string &strPathTimes,
                 vector<string> &vstrImages, vector<double> &vTimeStamps);
 
-void LoadIMU(const string &strImuPath, vector<double> &vTimeStamps, vector<cv::Point3f> &vAcc, vector<cv::Point3f> &vGyro);
+const bool LoadIMU(const string &strImuPath, vector<double> &vTimeStamps, vector<cv::Point3f> &vAcc, vector<cv::Point3f> &vGyro);
 
 double ttrack_tot = 0;
 int main(int argc, char **argv)
@@ -78,11 +78,20 @@ int main(int argc, char **argv)
     for (seq = 0; seq<num_seq; seq++)
     {
         cout << "Loading images for sequence " << seq << "...";
-        LoadImages(string(argv[3*(seq+1)]), string(argv[3*(seq+1)+1]), vstrImageFilenames[seq], vTimestampsCam[seq]);
+        if (!LoadImages(string(argv[3 * (seq + 1)]),
+                        string(argv[3 * (seq + 1) + 1]),
+                        vstrImageFilenames[seq], vTimestampsCam[seq])) {
+          cout << "ERROR: LOAD FAILED!" << endl;
+          return 1;
+        }
         cout << "LOADED!" << endl;
 
         cout << "Loading IMU for sequence " << seq << "...";
-        LoadIMU(string(argv[3*(seq+1)+2]), vTimestampsImu[seq], vAcc[seq], vGyro[seq]);
+        if (!LoadIMU(string(argv[3 * (seq + 1) + 2]), vTimestampsImu[seq],
+                     vAcc[seq], vGyro[seq])) {
+          cout << "LOAD FAILED!" << endl;
+          return 1;
+        }
         cout << "LOADED!" << endl;
 
         nImages[seq] = vstrImageFilenames[seq].size();
@@ -227,9 +236,13 @@ int main(int argc, char **argv)
     return 0;
 }
 
-void LoadImages(const string &strImagePath, const string &strPathTimes,
+const bool LoadImages(const string &strImagePath, const string &strPathTimes,
                 vector<string> &vstrImages, vector<double> &vTimeStamps)
 {
+    if (!boost::filesystem::exists(strImagePath)) {
+      cout << "Path not exist, please check:" << strImagePath << endl;
+      return false;
+    }
     ifstream fTimes;
     cout << strImagePath << endl;
     cout << strPathTimes << endl;
@@ -251,10 +264,15 @@ void LoadImages(const string &strImagePath, const string &strPathTimes,
 
         }
     }
+    return true;
 }
 
-void LoadIMU(const string &strImuPath, vector<double> &vTimeStamps, vector<cv::Point3f> &vAcc, vector<cv::Point3f> &vGyro)
+const bool LoadIMU(const string &strImuPath, vector<double> &vTimeStamps, vector<cv::Point3f> &vAcc, vector<cv::Point3f> &vGyro)
 {
+    if (!boost::filesystem::exists(strImuPath)) {
+        cout << "Path not exist, please check:" << strImuPath << endl;
+        return false;
+    }
     ifstream fImu;
     fImu.open(strImuPath.c_str());
     vTimeStamps.reserve(5000);
@@ -287,4 +305,5 @@ void LoadIMU(const string &strImuPath, vector<double> &vTimeStamps, vector<cv::P
             vGyro.push_back(cv::Point3f(data[1],data[2],data[3]));
         }
     }
+    return true;
 }
