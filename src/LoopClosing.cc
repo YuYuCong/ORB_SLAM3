@@ -93,8 +93,8 @@ void LoopClosing::Run()
                     if ((mpTracker->mSensor==System::IMU_MONOCULAR ||mpTracker->mSensor==System::IMU_STEREO) &&
                         (!mpCurrentKF->GetMap()->isImuInitialized()))
                     {
-                        cout << "IMU is not initilized, merge is aborted" << endl;
-                    }
+                        cout << "IMU is not initialized, merge is aborted" << endl;
+                    } // IMU 初始化
                     else
                     {
                         Verbose::PrintMess("*Merged detected", Verbose::VERBOSITY_QUIET);
@@ -318,11 +318,9 @@ bool LoopClosing::NewDetectCommonRegions()
     //Check the last candidates with geometric validation
     // Loop candidates
     bool bLoopDetectedInKF = false;
-    bool bCheckSpatial = false;
 
     if(mnLoopNumCoincidences > 0)
     {
-        bCheckSpatial = true;
         // Find from the last KF candidates
         cv::Mat mTcl = mpCurrentKF->GetPose() * mpLoopLastCurrentKF->GetPoseInverse();
         g2o::Sim3 gScl(Converter::toMatrix3d(mTcl.rowRange(0, 3).colRange(0, 3)),Converter::toVector3d(mTcl.rowRange(0, 3).col(3)),1.0);

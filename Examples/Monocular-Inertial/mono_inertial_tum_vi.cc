@@ -171,8 +171,8 @@ int main(int argc, char **argv)
             std::chrono::monotonic_clock::time_point t1 = std::chrono::monotonic_clock::now();
     #endif
 
-            // Pass the image to the SLAM system
-            SLAM.TrackMonocular(im,tframe,vImuMeas);
+          // Pass the image and imu data to the SLAM system
+          SLAM.TrackMonocular(im, tframe, vImuMeas);
 
     #ifdef COMPILEDWITHC11
             std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();

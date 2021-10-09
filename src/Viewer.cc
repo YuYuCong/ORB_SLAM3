@@ -173,7 +173,6 @@ void Viewer::Run()
 
     bool bFollow = true;
     bool bLocalizationMode = false;
-    bool bStepByStep = false;
     bool bCameraView = true;
 
     if(mpTracker->mSensor == mpSystem->MONOCULAR || mpTracker->mSensor == mpSystem->STEREO || mpTracker->mSensor == mpSystem->RGBD)

@@ -1135,6 +1135,10 @@ bool Tracking::ParseIMUParamFile(cv::FileStorage &fSettings)
 
     cout << "Left camera to Imu Transform (Tbc): " << endl << Tbc << endl;
 
+    // Ng: gyro noise
+    // Ngw: gyro walk
+    // Na: acc noise
+    // Naw: acc walk
     float freq, Ng, Na, Ngw, Naw;
 
     node = fSettings["IMU.Frequency"];
@@ -1664,7 +1668,7 @@ void Tracking::Track()
         mbStep = false;
     }
 
-    if(mpLocalMapper->mbBadImu)
+    if(mpLocalMapper->mbBadImu) // imu bad
     {
         cout << "TRACK: Reset map because local mapper set the bad imu flag " << endl;
         mpSystem->ResetActiveMap();

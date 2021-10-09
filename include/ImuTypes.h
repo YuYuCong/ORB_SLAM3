@@ -208,9 +208,9 @@ class Preintegrated
 
 public:
     Preintegrated(const Bias &b_, const Calib &calib);
-    Preintegrated(Preintegrated* pImuPre);
-    Preintegrated() {}
-    ~Preintegrated() {}
+    explicit Preintegrated(Preintegrated* pImuPre);
+    Preintegrated() = default;
+    ~Preintegrated() = default;
     void CopyFrom(Preintegrated* pImuPre);
     void Initialize(const Bias &b_);
     void IntegrateNewMeasurement(const cv::Point3f &acceleration, const cv::Point3f &angVel, const float &dt);

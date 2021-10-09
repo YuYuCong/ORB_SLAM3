@@ -152,7 +152,7 @@ set(THIRDPARTY_LIBRARY "/usr/local/lib")
 add_third_party(boost ${Boost_INCLUDE_DIRS}
         ${THIRDPARTY_LIBRARY}/libboost_filesystem.so.1.75.0
         ${THIRDPARTY_LIBRARY}/libboost_system.so.1.75.0
-        ${THIRDPARTY_LIBRARY}/libboost_serialization.so.1.75.0) # todo(congyu) only works on my cumputer
+        ${THIRDPARTY_LIBRARY}/libboost_serialization.so.1.75.0) # todo(congyu) only works on my computer
 
 target_link_libraries(${PROJECT_NAME}
 ${OpenCV_LIBS}
