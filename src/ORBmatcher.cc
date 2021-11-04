@@ -25,7 +25,9 @@
 
 #include <DBoW2/FeatureVector.h>
 
+#ifdef COMPILEDWITHC11
 #include<stdint-gcc.h>
+#endif
 
 using namespace std;
 

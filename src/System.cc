@@ -735,7 +735,7 @@ bool System::isLost()
         return false;
     else
     {
-        if ((mpTracker->mState==Tracking::LOST))
+        if (mpTracker->mState==Tracking::LOST)
             return true;
         else
             return false;
