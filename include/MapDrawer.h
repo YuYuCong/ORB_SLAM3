@@ -27,45 +27,48 @@
 
 #include<mutex>
 
-namespace ORB_SLAM3
-{
+namespace ORB_SLAM3 {
 
-class MapDrawer
-{
-public:
-    MapDrawer(Atlas* pAtlas, const string &strSettingPath);
+class MapDrawer {
+ public:
+  MapDrawer(Atlas *pAtlas, const string &strSettingPath);
 
-    Atlas* mpAtlas;
+  Atlas *mpAtlas;
 
-    void DrawMapPoints();
-    void DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const bool bDrawInertialGraph);
-    void DrawCurrentCamera(pangolin::OpenGlMatrix &Twc);
-    void SetCurrentCameraPose(const cv::Mat &Tcw);
-    void SetReferenceKeyFrame(KeyFrame *pKF);
-    void GetCurrentOpenGLCameraMatrix(pangolin::OpenGlMatrix &M, pangolin::OpenGlMatrix &MOw);
-    void GetCurrentOpenGLCameraMatrix(pangolin::OpenGlMatrix &M, pangolin::OpenGlMatrix &MOw, pangolin::OpenGlMatrix &MTwwp);
+  void DrawMapPoints();
+  void DrawKeyFrames(const bool bDrawKF,
+                     const bool bDrawGraph,
+                     const bool bDrawInertialGraph);
+  void DrawCurrentCamera(pangolin::OpenGlMatrix &Twc);
+  void SetCurrentCameraPose(const cv::Mat &Tcw);
+  void SetReferenceKeyFrame(KeyFrame *pKF);
+  void GetCurrentOpenGLCameraMatrix(pangolin::OpenGlMatrix &M,
+                                    pangolin::OpenGlMatrix &MOw);
+  void GetCurrentOpenGLCameraMatrix(pangolin::OpenGlMatrix &M,
+                                    pangolin::OpenGlMatrix &MOw,
+                                    pangolin::OpenGlMatrix &MTwwp);
 
-private:
+ private:
 
-    bool ParseViewerParamFile(cv::FileStorage &fSettings);
+  bool ParseViewerParamFile(cv::FileStorage &fSettings);
 
-    float mKeyFrameSize;
-    float mKeyFrameLineWidth;
-    float mGraphLineWidth;
-    float mPointSize;
-    float mCameraSize;
-    float mCameraLineWidth;
+  float mKeyFrameSize;
+  float mKeyFrameLineWidth;
+  float mGraphLineWidth;
+  float mPointSize;
+  float mCameraSize;
+  float mCameraLineWidth;
 
-    cv::Mat mCameraPose;
+  cv::Mat mCameraPose;
 
-    std::mutex mMutexCamera;
+  std::mutex mMutexCamera;
 
-    float mfFrameColors[6][3] = {{0.0f, 0.0f, 1.0f},
-                                {0.8f, 0.4f, 1.0f},
-                                {1.0f, 0.2f, 0.4f},
-                                {0.6f, 0.0f, 1.0f},
-                                {1.0f, 1.0f, 0.0f},
-                                {0.0f, 1.0f, 1.0f}};
+  float mfFrameColors[6][3] = {{0.0f, 0.0f, 1.0f},
+                               {0.8f, 0.4f, 1.0f},
+                               {1.0f, 0.2f, 0.4f},
+                               {0.6f, 0.0f, 1.0f},
+                               {1.0f, 1.0f, 0.0f},
+                               {0.0f, 1.0f, 1.0f}};
 };
 
 } //namespace ORB_SLAM
