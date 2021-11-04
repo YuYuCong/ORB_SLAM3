@@ -29,9 +29,7 @@
 
 #include <boost/serialization/base_object.hpp>
 
-
-namespace ORB_SLAM3
-{
+namespace ORB_SLAM3 {
 
 class MapPoint;
 class KeyFrame;
@@ -39,125 +37,127 @@ class Atlas;
 class KeyFrameDatabase;
 class GeometricCamera;
 
-class Map
-{
+class Map {
 
-public:
-    Map();
-    Map(int initKFid);
-    ~Map();
+ public:
+  Map();
+  Map(int initKFid);
+  ~Map();
 
-    void AddKeyFrame(KeyFrame* pKF);
-    void AddMapPoint(MapPoint* pMP);
-    void EraseMapPoint(MapPoint* pMP);
-    void EraseKeyFrame(KeyFrame* pKF);
-    void SetReferenceMapPoints(const std::vector<MapPoint*> &vpMPs);
-    void InformNewBigChange();
-    int GetLastBigChangeIdx();
+  void AddKeyFrame(KeyFrame *pKF);
+  void AddMapPoint(MapPoint *pMP);
+  void EraseMapPoint(MapPoint *pMP);
+  void EraseKeyFrame(KeyFrame *pKF);
+  void SetReferenceMapPoints(const std::vector<MapPoint *> &vpMPs);
+  void InformNewBigChange();
+  int GetLastBigChangeIdx();
 
-    std::vector<KeyFrame*> GetAllKeyFrames();
-    std::vector<MapPoint*> GetAllMapPoints();
-    std::vector<MapPoint*> GetReferenceMapPoints();
+  std::vector<KeyFrame *> GetAllKeyFrames();
+  std::vector<MapPoint *> GetAllMapPoints();
+  std::vector<MapPoint *> GetReferenceMapPoints();
 
-    long unsigned int MapPointsInMap();
-    long unsigned  KeyFramesInMap();
+  long unsigned int MapPointsInMap();
+  long unsigned KeyFramesInMap();
 
-    long unsigned int GetId();
+  long unsigned int GetId();
 
-    long unsigned int GetInitKFid();
-    void SetInitKFid(long unsigned int initKFif);
-    long unsigned int GetMaxKFid();
+  long unsigned int GetInitKFid();
+  void SetInitKFid(long unsigned int initKFif);
+  long unsigned int GetMaxKFid();
 
-    KeyFrame* GetOriginKF();
+  KeyFrame *GetOriginKF();
 
-    void SetCurrentMap();
-    void SetStoredMap();
+  void SetCurrentMap();
+  void SetStoredMap();
 
-    bool HasThumbnail();
-    bool IsInUse();
+  bool HasThumbnail();
+  bool IsInUse();
 
-    void SetBad();
-    bool IsBad();
+  void SetBad();
+  bool IsBad();
 
-    void clear();
+  void clear();
 
-    int GetMapChangeIndex();
-    void IncreaseChangeIndex();
-    int GetLastMapChange();
-    void SetLastMapChange(int currentChangeId);
+  int GetMapChangeIndex();
+  void IncreaseChangeIndex();
+  int GetLastMapChange();
+  void SetLastMapChange(int currentChangeId);
 
-    void SetImuInitialized();
-    bool isImuInitialized();
+  void SetImuInitialized();
+  bool isImuInitialized();
 
-    void RotateMap(const cv::Mat &R);
-    void ApplyScaledRotation(const cv::Mat &R, const float s, const bool bScaledVel=false, const cv::Mat t=cv::Mat::zeros(cv::Size(1,3),CV_32F));
+  void RotateMap(const cv::Mat &R);
+  void ApplyScaledRotation(const cv::Mat &R,
+                           const float s,
+                           const bool bScaledVel = false,
+                           const cv::Mat t = cv::Mat::zeros(cv::Size(1, 3),
+                                                            CV_32F));
 
-    void SetInertialSensor();
-    bool IsInertial();
-    void SetIniertialBA1();
-    void SetIniertialBA2();
-    bool GetIniertialBA1();
-    bool GetIniertialBA2();
+  void SetInertialSensor();
+  bool IsInertial();
+  void SetIniertialBA1();
+  void SetIniertialBA2();
+  bool GetIniertialBA1();
+  bool GetIniertialBA2();
 
-    void PrintEssentialGraph();
-    bool CheckEssentialGraph();
-    void ChangeId(long unsigned int nId);
+  void PrintEssentialGraph();
+  bool CheckEssentialGraph();
+  void ChangeId(long unsigned int nId);
 
-    unsigned int GetLowerKFID();
+  unsigned int GetLowerKFID();
 
-    vector<KeyFrame*> mvpKeyFrameOrigins;
-    vector<unsigned long int> mvBackupKeyFrameOriginsId;
-    KeyFrame* mpFirstRegionKF;
-    std::mutex mMutexMapUpdate;
+  vector<KeyFrame *> mvpKeyFrameOrigins;
+  vector<unsigned long int> mvBackupKeyFrameOriginsId;
+  KeyFrame *mpFirstRegionKF;
+  std::mutex mMutexMapUpdate;
 
-    // This avoid that two points are created simultaneously in separate threads (id conflict)
-    std::mutex mMutexPointCreation;
+  // This avoid that two points are created simultaneously in separate threads (id conflict)
+  std::mutex mMutexPointCreation;
 
-    bool mbFail;
+  bool mbFail;
 
-    // Size of the thumbnail (always in power of 2)
-    static const int THUMB_WIDTH = 512;
-    static const int THUMB_HEIGHT = 512;
+  // Size of the thumbnail (always in power of 2)
+  static const int THUMB_WIDTH = 512;
+  static const int THUMB_HEIGHT = 512;
 
-    static long unsigned int nNextId;
+  static long unsigned int nNextId;
 
-protected:
+ protected:
 
-    long unsigned int mnId;
+  long unsigned int mnId;
 
-    std::set<MapPoint*> mspMapPoints;
-    std::set<KeyFrame*> mspKeyFrames;
+  std::set<MapPoint *> mspMapPoints;
+  std::set<KeyFrame *> mspKeyFrames;
 
-    KeyFrame* mpKFinitial;
-    KeyFrame* mpKFlowerID;
+  KeyFrame *mpKFinitial;
+  KeyFrame *mpKFlowerID;
 
-    std::vector<MapPoint*> mvpReferenceMapPoints;
+  std::vector<MapPoint *> mvpReferenceMapPoints;
 
-    bool mbImuInitialized;
+  bool mbImuInitialized;
 
-    int mnMapChange;
-    int mnMapChangeNotified;
+  int mnMapChange;
+  int mnMapChangeNotified;
 
-    long unsigned int mnInitKFid;
-    long unsigned int mnMaxKFid;
-    long unsigned int mnLastLoopKFid;
+  long unsigned int mnInitKFid;
+  long unsigned int mnMaxKFid;
+  long unsigned int mnLastLoopKFid;
 
-    // Index related to a big change in the map (loop closure, global BA)
-    int mnBigChangeIdx;
+  // Index related to a big change in the map (loop closure, global BA)
+  int mnBigChangeIdx;
 
+  // View of the map in aerial sight (for the AtlasViewer)
+  GLubyte *mThumbnail;
 
-    // View of the map in aerial sight (for the AtlasViewer)
-    GLubyte* mThumbnail;
+  bool mIsInUse;
+  bool mHasTumbnail;
+  bool mbBad = false;
 
-    bool mIsInUse;
-    bool mHasTumbnail;
-    bool mbBad = false;
+  bool mbIsInertial;
+  bool mbIMU_BA1;
+  bool mbIMU_BA2;
 
-    bool mbIsInertial;
-    bool mbIMU_BA1;
-    bool mbIMU_BA2;
-
-    std::mutex mMutexMap;
+  std::mutex mMutexMap;
 };
 
 } //namespace ORB_SLAM3
