@@ -27,12 +27,13 @@
 #include "KannalaBrandt8.h"
 
 #include <set>
-#include <memory>
 #include <mutex>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/export.hpp>
 
-namespace ORB_SLAM3 {
+
+namespace ORB_SLAM3
+{
 class Viewer;
 class Map;
 class MapPoint;
@@ -42,71 +43,90 @@ class Frame;
 class KannalaBrandt8;
 class Pinhole;
 
-class Atlas {
+class Atlas
+{
 
- public:
-  Atlas();
-  Atlas(int initKFid); // When its initialization the first map is created
-  ~Atlas();
+public:
+    Atlas();
+    Atlas(int initKFid); // When its initialization the first map is created
+    ~Atlas();
 
-  void CreateNewMap();
-  void ChangeMap(Map *pMap);
+    void CreateNewMap();
+    void ChangeMap(Map* pMap);
 
-  unsigned long int GetLastInitKFid();
+    unsigned long int GetLastInitKFid();
 
-  void SetViewer(Viewer *pViewer);
+    void SetViewer(Viewer* pViewer);
 
-  // Method for change components in the current map
-  void AddKeyFrame(KeyFrame *pKF);
-  void AddMapPoint(MapPoint *pMP);
+    // Method for change components in the current map
+    void AddKeyFrame(KeyFrame* pKF);
+    void AddMapPoint(MapPoint* pMP);
 
-  void AddCamera(GeometricCamera *pCam);
+    void AddCamera(GeometricCamera* pCam);
 
-  /* All methods without Map pointer work on current map */
-  void SetReferenceMapPoints(const std::vector<MapPoint *> &vpMPs);
-  void InformNewBigChange();
-  int GetLastBigChangeIdx();
+    /* All methods without Map pointer work on current map */
+    void SetReferenceMapPoints(const std::vector<MapPoint*> &vpMPs);
+    void InformNewBigChange();
+    int GetLastBigChangeIdx();
 
-  long unsigned int MapPointsInMap();
-  long unsigned KeyFramesInMap();
+    long unsigned int MapPointsInMap();
+    long unsigned KeyFramesInMap();
 
-  // Method for get data in current map
-  std::vector<KeyFrame *> GetAllKeyFrames();
-  std::vector<MapPoint *> GetAllMapPoints();
-  std::vector<MapPoint *> GetReferenceMapPoints();
+    // Method for get data in current map
+    std::vector<KeyFrame*> GetAllKeyFrames();
+    std::vector<MapPoint*> GetAllMapPoints();
+    std::vector<MapPoint*> GetReferenceMapPoints();
 
-  std::vector<Map *> GetAllMaps();
+    vector<Map*> GetAllMaps();
 
-  int CountMaps();
+    int CountMaps();
 
-  void clearMap();
+    void clearMap();
 
-  void clearAtlas();
+    void clearAtlas();
 
-  Map *GetCurrentMap();
+    Map* GetCurrentMap();
 
-  void SetMapBad(Map *pMap);
-  void RemoveBadMaps();
+    void SetMapBad(Map* pMap);
+    void RemoveBadMaps();
 
-  bool isInertial();
-  void SetInertialSensor();
-  void SetImuInitialized();
-  bool isImuInitialized();
+    bool isInertial();
+    void SetInertialSensor();
+    void SetImuInitialized();
+    bool isImuInitialized();
 
-  void SetKeyFrameDatabase(KeyFrameDatabase *pKFDB);
-  KeyFrameDatabase *GetKeyFrameDatabase();
+    void SetKeyFrameDababase(KeyFrameDatabase* pKFDB);
+    KeyFrameDatabase* GetKeyFrameDatabase();
 
-  void SetORBVocabulary(ORBVocabulary *pORBVoc);
-  ORBVocabulary *GetORBVocabulary();
+    void SetORBVocabulary(ORBVocabulary* pORBVoc);
+    ORBVocabulary* GetORBVocabulary();
 
-  long unsigned int GetNumLivedKF();
+    long unsigned int GetNumLivedKF();
 
-  long unsigned int GetNumLivedMP();
+    long unsigned int GetNumLivedMP();
 
- private:
-  // PIMPL
-  class Impl;
-  std::shared_ptr<Impl> impl_;
+protected:
+
+    std::set<Map*> mspMaps;
+    std::set<Map*> mspBadMaps;
+    Map* mpCurrentMap;
+
+    std::vector<GeometricCamera*> mvpCameras;
+    std::vector<KannalaBrandt8*> mvpBackupCamKan;
+    std::vector<Pinhole*> mvpBackupCamPin;
+
+    std::mutex mMutexAtlas;
+
+    unsigned long int mnLastInitKFidMap;
+
+    Viewer* mpViewer;
+    bool mHasViewer;
+
+    // Class references for the map reconstruction from the save file
+    KeyFrameDatabase* mpKeyFrameDB;
+    ORBVocabulary* mpORBVocabulary;
+
+
 }; // class Atlas
 
 } // namespace ORB_SLAM3
