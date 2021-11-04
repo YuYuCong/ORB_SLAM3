@@ -102,6 +102,8 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/include/CameraModels
         ${EIGEN3_INCLUDE_DIR}
         ${Pangolin_INCLUDE_DIRS}
+        ${PROJECT_SOURCE_DIR}/Thirdparty/g2o
+        ${PROJECT_SOURCE_DIR}/Thirdparty/DBoW2
 )
 
 # src
