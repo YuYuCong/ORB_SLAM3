@@ -30,56 +30,53 @@
 #include<mutex>
 #include <unordered_set>
 
-
-namespace ORB_SLAM3
-{
+namespace ORB_SLAM3 {
 
 class Tracking;
 class Viewer;
 
-class FrameDrawer
-{
-public:
-    FrameDrawer(Atlas* pAtlas);
+class FrameDrawer {
+ public:
+  FrameDrawer(Atlas *pAtlas);
 
-    // Update info from the last processed frame.
-    void Update(Tracking *pTracker);
+  // Update info from the last processed frame.
+  void Update(Tracking *pTracker);
 
-    // Draw last processed frame.
-    cv::Mat DrawFrame(bool bOldFeatures=true);
-    cv::Mat DrawRightFrame();
+  // Draw last processed frame.
+  cv::Mat DrawFrame(bool bOldFeatures = true);
+  cv::Mat DrawRightFrame();
 
-    bool both;
+  bool both;
 
-protected:
+ protected:
 
-    void DrawTextInfo(cv::Mat &im, int nState, cv::Mat &imText);
+  void DrawTextInfo(cv::Mat &im, int nState, cv::Mat &imText);
 
-    // Info of the frame to be drawn
-    cv::Mat mIm, mImRight;
-    int N;
-    vector<cv::KeyPoint> mvCurrentKeys,mvCurrentKeysRight;
-    vector<bool> mvbMap, mvbVO;
-    bool mbOnlyTracking;
-    int mnTracked, mnTrackedVO;
-    vector<cv::KeyPoint> mvIniKeys;
-    vector<int> mvIniMatches;
-    int mState;
+  // Info of the frame to be drawn
+  cv::Mat mIm, mImRight;
+  int N;
+  vector<cv::KeyPoint> mvCurrentKeys, mvCurrentKeysRight;
+  vector<bool> mvbMap, mvbVO;
+  bool mbOnlyTracking;
+  int mnTracked, mnTrackedVO;
+  vector<cv::KeyPoint> mvIniKeys;
+  vector<int> mvIniMatches;
+  int mState;
 
-    Atlas* mpAtlas;
+  Atlas *mpAtlas;
 
-    std::mutex mMutex;
-    vector<pair<cv::Point2f, cv::Point2f> > mvTracks;
+  std::mutex mMutex;
+  vector<pair<cv::Point2f, cv::Point2f> > mvTracks;
 
-    Frame mCurrentFrame;
-    vector<MapPoint*> mvpLocalMap;
-    vector<cv::KeyPoint> mvMatchedKeys;
-    vector<MapPoint*> mvpMatchedMPs;
-    vector<cv::KeyPoint> mvOutlierKeys;
-    vector<MapPoint*> mvpOutlierMPs;
+  Frame mCurrentFrame;
+  vector<MapPoint *> mvpLocalMap;
+  vector<cv::KeyPoint> mvMatchedKeys;
+  vector<MapPoint *> mvpMatchedMPs;
+  vector<cv::KeyPoint> mvOutlierKeys;
+  vector<MapPoint *> mvpOutlierMPs;
 
-    map<long unsigned int, cv::Point2f> mmProjectPoints;
-    map<long unsigned int, cv::Point2f> mmMatchedInImage;
+  map<long unsigned int, cv::Point2f> mmProjectPoints;
+  map<long unsigned int, cv::Point2f> mmMatchedInImage;
 
 };
 
