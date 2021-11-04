@@ -102,7 +102,7 @@ void LoopClosing::Run() {
               || mpTracker->mSensor == System::IMU_STEREO) &&
               (!mpCurrentKF->GetMap()->isImuInitialized())) {
             cout << "IMU is not initialized, merge is aborted" << endl;
-          } // IMU 初始化
+          }
           else {
             Verbose::PrintMess("*Merged detected", Verbose::VERBOSITY_QUIET);
             Verbose::PrintMess("Number of KFs in the current map: "
