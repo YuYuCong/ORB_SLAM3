@@ -26,7 +26,7 @@ DatasetList=(\
 "dataset-room5_512_16" \
 )
 
-for Dataset in ${DatasetList[@]}
+for Dataset in "${DatasetList[@]}"
 do
   echo "------------------------------------"
   echo "Launching ""$Dataset"" with Monocular-Inertial sensor"
