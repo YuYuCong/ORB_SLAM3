@@ -467,27 +467,27 @@ class ORBextractor::Impl {
                  std::vector<cv::KeyPoint> &_keypoints,
                  cv::OutputArray _descriptors, std::vector<int> &vLappingArea);
 
-  int inline GetLevels() {
+  int GetLevels() {
     return nlevels;
   }
 
-  float inline GetScaleFactor() {
+  float GetScaleFactor() {
     return scaleFactor;
   }
 
-  std::vector<float> inline GetScaleFactors() {
+  std::vector<float> GetScaleFactors() {
     return mvScaleFactor;
   }
 
-  std::vector<float> inline GetInverseScaleFactors() {
+  std::vector<float> GetInverseScaleFactors() {
     return mvInvScaleFactor;
   }
 
-  std::vector<float> inline GetScaleSigmaSquares() {
+  std::vector<float> GetScaleSigmaSquares() {
     return mvLevelSigma2;
   }
 
-  std::vector<float> inline GetInverseScaleSigmaSquares() {
+  std::vector<float> GetInverseScaleSigmaSquares() {
     return mvInvLevelSigma2;
   }
 
