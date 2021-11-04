@@ -43,6 +43,21 @@ LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 
 
 ### third-party ################################
+# ADD_THIRD_PARTY defines a named third party library, with included
+# headers and linked libraries.
+function(ADD_THIRD_PARTY lib_name includes # link_libs
+        )
+    # Skip if library exists, generally because of building sources
+    if (TARGET ${lib_name})
+        return()
+    endif ()
+    # Add interface
+    add_library(${lib_name} INTERFACE)
+    # Target includes
+    target_include_directories(${lib_name} INTERFACE ${includes})
+    # Link libraries
+    target_link_libraries(${lib_name} INTERFACE ${ARGN})
+endfunction()
 
 # opencv
 find_package(OpenCV 4.0)
@@ -61,6 +76,23 @@ find_package(Pangolin REQUIRED)
 # realsense2
 find_package(realsense2)
 
+# Boost (filesystem, system and serialization libraries only)
+find_package(Boost REQUIRED COMPONENTS filesystem)
+if (Boost_FOUND)
+    MESSAGE(STATUS "Boost_INCLUDE_DIRS = ${Boost_INCLUDE_DIRS}")
+    MESSAGE(STATUS "Boost_LIBRARIES = ${Boost_LIBRARIES}")
+    MESSAGE(STATUS "Boost_LIB_VERSION = ${Boost_LIB_VERSION}")
+    MESSAGE(STATUS "Boost_LIB_DIR = ${Boost_LIB_DIR}")
+else ()
+    MESSAGE(FATAL_ERROR "Boost not found")
+endif ()
+
+
+set(BOOST_LIBRARY_PATH "/usr/local/lib")
+add_third_party(boost ${Boost_INCLUDE_DIRS}
+        ${BOOST_LIBRARY_PATH}/libboost_filesystem.so.1.75.0
+        ${BOOST_LIBRARY_PATH}/libboost_system.so.1.75.0
+        ${BOOST_LIBRARY_PATH}/libboost_serialization.so.1.75.0) # todo(congyu) only works on my computer
 
 ### resources
 # include
@@ -131,39 +163,6 @@ add_library(${PROJECT_NAME} SHARED
         )
 
 add_subdirectory(Thirdparty/g2o)
-
-# Boost (filesystem, system and serialization libraries only)
-find_package(Boost REQUIRED COMPONENTS filesystem)
-if (Boost_FOUND)
-    MESSAGE(STATUS "Boost_INCLUDE_DIRS = ${Boost_INCLUDE_DIRS}")
-    MESSAGE(STATUS "Boost_LIBRARIES = ${Boost_LIBRARIES}")
-    MESSAGE(STATUS "Boost_LIB_VERSION = ${Boost_LIB_VERSION}")
-    MESSAGE(STATUS "Boost_LIB_DIR = ${Boost_LIB_DIR}")
-else ()
-    MESSAGE(FATAL_ERROR "Boost not found")
-endif ()
-
-# ADD_THIRD_PARTY defines a named third party library, with included
-# headers and linked libraries.
-function(ADD_THIRD_PARTY lib_name includes # link_libs
-        )
-    # Skip if library exists, generally because of building sources
-    if (TARGET ${lib_name})
-        return()
-    endif ()
-    # Add interface
-    add_library(${lib_name} INTERFACE)
-    # Target includes
-    target_include_directories(${lib_name} INTERFACE ${includes})
-    # Link libraries
-    target_link_libraries(${lib_name} INTERFACE ${ARGN})
-endfunction()
-
-set(BOOST_LIBRARY_PATH "/usr/local/lib")
-add_third_party(boost ${Boost_INCLUDE_DIRS}
-        ${BOOST_LIBRARY_PATH}/libboost_filesystem.so.1.75.0
-        ${BOOST_LIBRARY_PATH}/libboost_system.so.1.75.0
-        ${BOOST_LIBRARY_PATH}/libboost_serialization.so.1.75.0) # todo(congyu) only works on my computer
 
 target_link_libraries(${PROJECT_NAME}
         ${OpenCV_LIBS}
