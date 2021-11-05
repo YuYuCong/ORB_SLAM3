@@ -43,7 +43,7 @@ build/
 lib/
 
 cmake_modules/
-cmake-build-debug/
+cmake-build-debug*/
 
 *.pyc
 *.osa
