@@ -73,6 +73,8 @@ MESSAGE("OPENCV VERSION:${OpenCV_VERSION}")
 find_package(Eigen3 REQUIRED)
 # pangolin
 find_package(Pangolin REQUIRED)
+# g2o
+add_subdirectory(Thirdparty/g2o) # todo(congyu) refine this
 # realsense2
 find_package(realsense2)
 
@@ -87,14 +89,14 @@ else ()
     MESSAGE(FATAL_ERROR "Boost not found")
 endif ()
 
-
 set(BOOST_LIBRARY_PATH "/usr/local/lib")
 add_third_party(boost ${Boost_INCLUDE_DIRS}
         ${BOOST_LIBRARY_PATH}/libboost_filesystem.so.1.75.0
         ${BOOST_LIBRARY_PATH}/libboost_system.so.1.75.0
         ${BOOST_LIBRARY_PATH}/libboost_serialization.so.1.75.0) # todo(congyu) only works on my computer
 
-### resources
+
+### resources ################################
 # include
 include_directories(
         ${PROJECT_SOURCE_DIR}
@@ -102,7 +104,7 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/include/CameraModels
         ${EIGEN3_INCLUDE_DIR}
         ${Pangolin_INCLUDE_DIRS}
-        ${PROJECT_SOURCE_DIR}/Thirdparty/g2o
+        ${PROJECT_SOURCE_DIR}/Thirdparty/g2o   # todo(congyu) refine this
         ${PROJECT_SOURCE_DIR}/Thirdparty/DBoW2
 )
 
@@ -164,8 +166,6 @@ add_library(${PROJECT_NAME} SHARED
         include/Config.h
         )
 
-add_subdirectory(Thirdparty/g2o)
-
 target_link_libraries(${PROJECT_NAME}
         ${OpenCV_LIBS}
         ${EIGEN3_LIBS}
@@ -177,7 +177,7 @@ target_link_libraries(${PROJECT_NAME}
         )
 
 
-### Build examples
+### Build examples ################################
 
 # RGB-D examples
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/RGB-D)
