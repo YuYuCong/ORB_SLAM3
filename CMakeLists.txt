@@ -73,6 +73,8 @@ MESSAGE("OPENCV VERSION:${OpenCV_VERSION}")
 find_package(Eigen3 REQUIRED)
 # pangolin
 find_package(Pangolin REQUIRED)
+# g2o
+add_subdirectory(Thirdparty/g2o) # todo(congyu) refine this
 # realsense2
 find_package(realsense2)
 
@@ -102,7 +104,7 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/include/CameraModels
         ${EIGEN3_INCLUDE_DIR}
         ${Pangolin_INCLUDE_DIRS}
-        ${PROJECT_SOURCE_DIR}/Thirdparty/g2o
+        ${PROJECT_SOURCE_DIR}/Thirdparty/g2o   # todo(congyu) refine this
         ${PROJECT_SOURCE_DIR}/Thirdparty/DBoW2
 )
 
@@ -163,8 +165,6 @@ add_library(${PROJECT_NAME} SHARED
         include/TwoViewReconstruction.h
         include/Config.h
         )
-
-add_subdirectory(Thirdparty/g2o)
 
 target_link_libraries(${PROJECT_NAME}
         ${OpenCV_LIBS}
